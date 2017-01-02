@@ -1,0 +1,218 @@
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+  text-decoration: none;
+}
+/* HTML5 display-role reset for older browsers */
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+  display: block;
+}
+body {
+  line-height: 1;
+}
+ol,
+ul {
+  list-style: none;
+}
+blockquote,
+q {
+  quotes: none;
+}
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+  content: '';
+  content: none;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+/**
+ * @author Gajus Kuizinas <g.kuizinas@anuary.com>
+ * @copyright Copyright (c) 2011, Anuary Ltd
+ * @version 1.2
+ */
+.group:after {
+  visibility: hidden;
+  display: block;
+  content: '';
+  clear: both;
+  height: 0;
+}
+* html .group {
+  zoom: 1;
+}
+/* IE6 */
+*:first-child + html .group {
+  zoom: 1;
+}
+/* IE7 */
+.margin-top {
+  margin-top: 20px;
+}
+.margin-sides {
+  margin-left: 5px;
+  margin-right: 5px;
+}
+.clear {
+  background: none;
+  border: 0;
+  clear: both;
+  display: block;
+  float: none;
+  font-size: 0;
+  height: 0;
+  margin: 0;
+  overflow: hidden;
+  padding: 0;
+  visibility: hidden;
+  width: 0;
+}
+.hidden {
+  display: none;
+}
+table {
+  width: 100%;
+  table-layout: fixed;
+  text-align: left;
+}
+table thead {
+  font-weight: bold;
+}
+textarea {
+  resize: none;
+}
+#ay-message {
+  margin-bottom: 20px;
+}
+#ay-message a {
+  color: #FFF;
+  font-weight: bold;
+}
+#ay-message div {
+  display: block;
+  padding: 10px;
+  color: #FFF;
+  margin-top: 10px;
+}
+#ay-message div.success {
+  background: #9db783;
+}
+#ay-message div.error {
+  background: #cc0319;
+}
+#ay-message div.notice {
+  background: #d8aa00;
+}
+q {
+  quotes: '“' '”' '‘' '’';
+}
+q:before {
+  content: open-quote;
+}
+q:after {
+  content: close-quote;
+}
+/**
+ * LESS mixins
+ */

@@ -1,0 +1,8 @@
+node_modules
+vendor
+*.log
+.*
+!.editorconfig
+!.git
+!.gitignore
+!.gitmodules

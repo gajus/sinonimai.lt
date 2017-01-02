@@ -1,0 +1,12 @@
+{
+    "name": "gajus/sinonimai.lt",
+    "description": "Gyvosios kalbos turtinimo projektas.",
+    "type": "project",
+    "license": "BSD-3-Clause",
+    "authors": [
+        {
+            "name": "Gajus Kuizinas",
+            "email": "gajus@gajus.com"
+        }
+    ]
+}
