@@ -1,13 +1,6 @@
 <?php
 require 'ay/includes/bootstrap.inc.php';
 
-if($_SERVER['HTTP_HOST'] === 'antonimai.lt' || $_SERVER['HTTP_HOST'] === 'tezauras.lt')
-{
-	header('Location: http://sinonimai.lt/');
-
-	exit;
-}
-
 if(!empty($_GET['connect']))
 {
 	$authenticate_user();
