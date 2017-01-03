@@ -2,14 +2,14 @@
 <html lang="lt">
     <head>
     	<meta name="google-site-verification" content="IGj2KPkwgwVY6tFlxdvoM5CCgLp5r_jlf2aRvQfzcEI" />
-    
+
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	
 		<base href="http://sinonimai.lt/" />
-		
 		<link rel="icon" href="public/img/favicon.gif" type="image/gif" />
 		<link rel="stylesheet" href="public/css/default.css" type="text/css" />
-		
+
+
+
 		<meta property="og:title" content="Sinonimų Žodynas"/>
 	    <meta property="og:type" content="website"/>
 	    <meta property="og:url" content="http://sinonimai.lt"/>
@@ -20,11 +20,10 @@
 	    <meta property="og:locale" content="lt_LT"/>
 	    <meta property="og:description"
 	          content="Sinonimų žodynas yra gyvosios kalbos turtinimo projektas, skatinantis domėtis turimais kalbos turtais, jais naudotis ir juos kurti, įtraukti visuomenę, ypatingai jaunimą, į lietuvių kalbos puoselėjimo, jos vartojimo, aktyvinimo kūrybinę veiklą."/>
-		
-		
-		
+
 		<script type="text/javascript" src="http://apis.google.com/js/plusone.js"></script>
-		
+
+
 		<title><?=empty($title) ? 'Sinonimų žodynas'. (!empty($template['browser-title']) ? ' – ' . $template['browser-title'] : '') : $title?></title>
 
 		<script type="text/javascript">var _kmq = _kmq || [];
@@ -42,10 +41,10 @@
 		</script>
     </head>
     <body>
-    
+
 		<div id="header">
 			<a href="http://sinonimai.lt/" class="logo" title="Sinonimų žodynas"></a>
-			
+
 			<?php if($user):?>
 			<div class="connected">
 				<p>Sveika<?php if($user['gender'] == 1):?>s<?php endif;?>, <?=$user['first_name']?> sugrįž<?=$user['gender'] == 1 ? 'ęs' : 'usi'?>!</p>
@@ -71,7 +70,7 @@
 				ORDER BY
 					`s1`.`entry_timestamp` DESC
 				")->fetchAll(PDO::FETCH_ASSOC);
-				
+
 				$approved	= count(array_filter($suggestions, function($e){ return $e['status'] == 1; }));
 				?>
 				<p>
@@ -88,11 +87,11 @@
 			<?php else:?>
 			<div class="connect">
 				<p><a href="http://sinonimai.lt/?connect=facebook"><span class="facebook"></span>Prisijunkite su Facebook</a></p>
-				
+
 				<p>Prisijungę naudodami Facebook galėsite pildyti Sinonimų Žodyną, dalyvauti konkursuose ir sužinoti apie svarbias naujienas.</p>
 			</div>
 			<?php endif;?>
-			
+
 			<div class="navigation">
 				<a href="http://sinonimai.lt/"<?=in_array($display, array(0,1,2,3,4,5)) ? ' class="active"' : ''?>>Sinonimų žodynas</a>
 				<?php /*<a href="http://sinonimai.lt/konkursas.html"<?=$display == 11 ? ' class="active"' : ''?>>Konkursas</a>*/?>
@@ -101,7 +100,7 @@
 				<a href="http://sinonimai.lt/kontaktai.html"<?=$display == 8 ? ' class="active"' : ''?>>Kontaktai</a>
 			</div>
 		</div>
-	
+
 		<div id="body">
 			<?=$body?>
 		</div>
@@ -115,7 +114,7 @@
 				<li>Turinio naudojimas yra ribojamas autorinių teisių. Daugiau informacijos <a href="<?=u('/naudojimo-salygos.html')?>">naudojimo sąlygose</a>.</li>
 			</ul>
 		</div>
-		
+
 		<div id="fb-root"></div>
 		<script>(function(d, s, id) {
 		  var js, fjs = d.getElementsByTagName(s)[0];
@@ -124,23 +123,22 @@
 		  js.src = "//connect.facebook.net/en_GB/all.js#xfbml=1&appId=257825524265543";
 		  fjs.parentNode.insertBefore(js, fjs);
 		}(document, 'script', 'facebook-jssdk'));</script>
-		
 		<script type="text/javascript" src="public/js/jquery-1.7.min.js"></script>
 		<script type="text/javascript" src="public/js/jquery.debounce-1.0.5.js"></script>
 		<script type="text/javascript" src="public/js/jquery.ayTagBox.js"></script>
 		<script type="text/javascript" src="public/js/default.js"></script>
-		
+
 		<script type="text/javascript">
 		  var _gaq = _gaq || [];
 		  _gaq.push(['_setAccount', 'UA-18690922-2']);
 		  _gaq.push(['_trackPageview']);
-		
+
 		  (function() {
 		    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
 		    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
 		    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 		  })();
-		
+
 		</script>
     </body>
 </html>

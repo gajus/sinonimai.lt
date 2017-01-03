@@ -1,33 +1,33 @@
 $(document).ready(function(){
 	suggestion_ajax_request	= {abort: function(){}};
-	
+
 	if(window.location.hash.length > 3)
 	{
 		//var query	= trim(strstr(window.location.hash, '/').substr(1), '/');
 		var query	= trim(window.location.hash, '#_=/!');
-		
+
 		displayResult(query);
 	}
-	
+
 	$('input[name=call]').keyup($.debounce(keyUp, 100));
-	
+
 	$('form[name=search]').submit(function(){
-		
+
 		if(!$('#suggestions').length)
 		{
 			return false;
 		}
-		
+
 		displayResult($('#suggestions li.selected').text());
-		
+
 		return false;
 	});
-	
+
 	$('#suggestions li').live('hover', function(){
 		$('#suggestions li.selected').removeClass('selected');
 		$(this).addClass('selected');
 	});
-	
+
 	$('#suggestions li').live('click', function(){
 		$('form[name=search]').trigger('submit');
 	});
@@ -51,19 +51,19 @@ function displayResult(query)
 		{
 			if(!data.html)
 			{
-				return;			
+				return;
 			}
-		
+
 			$('#home').hide();
-			
+
 			document.title			= 'Sinonimai žodžiui ' + data.word.word + ' – Sinonimų žodynas';
 			window.location.hash	= '!/' + data.word.slug;
-			
+
 			$('#result').html(data.html).show();
-			
+
 			$('#result div.suggestions-box .input').ayTagBox();
-			
-			
+
+
 		}
 	});
 }
@@ -75,31 +75,31 @@ function keyUp(e)
 	window.location.hash	= '#!/';
 
 	var code = e.keyCode ? e.keyCode : e.which;
-	
+
 	if(code == 38)
 	{
 		var prev	= $('#suggestions li.selected').prev('li');
-	
+
 		if(prev.length)
 		{
 			$('#suggestions li.selected').removeClass('selected');
-			
+
 			prev.addClass('selected');
 		}
-		
+
 		return;
 	}
 	else if(code == 40)
 	{
 		var next	= $('#suggestions li.selected').next('li');
-	
+
 		if(next.length)
 		{
 			$('#suggestions li.selected').removeClass('selected');
-			
+
 			next.addClass('selected');
 		}
-		
+
 		return;
 	}
 	else if([0,13,16,17,18,37,39,224].indexOf(code) != -1)
@@ -111,14 +111,14 @@ function keyUp(e)
 	{
 		$('#result').html('').hide();
 		$('#home').show();
-		
+
 		return;
 	}
-	
+
 	$('#home').hide();
 
-	$('#result').show().html('<div class="message loading">Paieška vykdoma <img src="public/img/ajax-loader.gif" alt="" /></div>');
-	
+	$('#result').show().html('<div class="message loading">Paieška vykdoma <img src="/static/img/ajax-loader.gif" alt="" /></div>');
+
 	suggestion_ajax_request	= $.ajax({
 		url: '/dictionary.php',
 		type: 'POST',
@@ -132,21 +132,21 @@ function keyUp(e)
 		},*/
 		success: function(data)
 		{
-		
+
 			if(data.length == 0)
 			{
 				$('#result').html('<div class="message">Paieška nerado rezultatų.</div>');
 			}
 			else
-			{		
+			{
 				var html	= '<ul id="suggestions">';
-							
+
 				$.each(data, function(i, item){
 					html += i == 0 ? '<li class="selected">' + item + '</li>' : '<li>' + item + '</li>';
 				});
-				
+
 				html += '</ul>';
-	
+
 				$('#result').html( html );
 			}
 		}

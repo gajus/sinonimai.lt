@@ -14,7 +14,7 @@ function formated_date($string)
 {
     $timestamp	    = strtotime($string);
 	$months_names   = array('sausio','vasario','kovo','balandžio','gegužės','birželio','liepos','rugpjūčio','rugsėjo','spalio','lapkričio','gruodžio');
-	
+
     return date('Y', $timestamp) . ' m. ' . $months_names[date('n', $timestamp)-1] . ' ' . date('j', $timestamp) . ' d.';
 }
 
@@ -22,12 +22,12 @@ $gather_data		= function($word_str) use ($db)
 {
 	$result			= array();
 	$result['word']	= $db->query("SELECT `w1`.`word_id`, `w1`.`word`, `w1`.`slug` FROM `words` `w1` WHERE `w1`.`word` = {$db->quote($word_str)};")->fetch(PDO::FETCH_ASSOC);
-	
+
 	if(empty($result['word']))
 	{
 		return FALSE;
 	}
-	
+
 	$query	= "
 	SELECT
 		w1.word_id, w1.word,
@@ -41,27 +41,27 @@ $gather_data		= function($word_str) use ($db)
 		w2.year work_year
 	FROM
 		words_synonyms ws1
-	
+
 	INNER JOIN words w1 ON w1.word_id = ws1.synonym_id
-	
+
 	INNER JOIN word_synonym_groups wsg1 ON wsg1.word_synonym_id = ws1.word_synonym_id
 	INNER JOIN groups g1 ON g1.group_id = wsg1.group_id
-	
+
 	LEFT JOIN word_synonym_group_properties wsgp1 ON wsgp1.word_synonym_group_id = wsg1.word_synonym_group_id
 	LEFT JOIN properties p1 ON p1.property_id = wsgp1.property_id
-	
+
 	LEFT JOIN uses u1 ON u1.word_synonym_group_id = wsg1.word_synonym_group_id
 	LEFT JOIN works w2 ON w2.work_id = u1.work_id
 	LEFT JOIN authors a1 ON a1.author_id = w2.author_id
-	
+
 	WHERE ws1.word_id = {$db->quote($result['word']['word_id'])}
-	
+
 	ORDER BY g1.group_id ASC, w1.word ASC";
-	
+
 	$synonyms	    = $db->query($query)->fetchAll(PDO::FETCH_ASSOC);
-	
+
 	$result['groups'] = array();
-	
+
 	// group results
 	foreach($synonyms as $s)
 	{
@@ -70,7 +70,7 @@ $gather_data		= function($word_str) use ($db)
 		$result['groups'][$s['group_id']]['synonyms'][$s['word_id']]['word_synonym_group_id']   = $s['word_synonym_group_id'];
 		$result['groups'][$s['group_id']]['synonyms'][$s['word_id']]['word_id']					= $s['word_id'];
 		$result['groups'][$s['group_id']]['synonyms'][$s['word_id']]['word']					= $s['word'];
-	
+
 		if($s['author_first_name'] != NULL)
 		{
 			$result['groups'][$s['group_id']]['synonyms'][$s['word_id']]['use']					= $s['use'];
@@ -79,17 +79,17 @@ $gather_data		= function($word_str) use ($db)
 			$result['groups'][$s['group_id']]['synonyms'][$s['word_id']]['work_title']		    = $s['work_title'];
 			$result['groups'][$s['group_id']]['synonyms'][$s['word_id']]['work_year']		    = $s['work_year'];
 		}
-	
+
 		if($s['abbreviation'] !== NULL)
 		{
 			$result['groups'][$s['group_id']]['synonyms'][$s['word_id']]['properties'][$s['property_id']]	= array('abbreviation' => $s['abbreviation'], 'augmentation' => $s['augmentation']);
 		}
 	}
-	
+
 	/*if(!empty($_POST['property']))
 	{
 		$properties	= array_diff($this->db->query('SELECT `property_id` FROM `properties`')->fetchAll(PDO::FETCH_COLUMN), array_keys($_POST['property']));
-	
+
 		foreach($result['groups'] as $id1 => &$g)
 		{
 			foreach($g['synonyms'] as $id2 => &$s)
@@ -101,7 +101,7 @@ $gather_data		= function($word_str) use ($db)
 						if(in_array($p, array_keys($s['properties'])))
 						{
 							unset($result['groups'][$id1]['synonyms'][$id2]);
-	
+
 							if(empty($result['groups'][$id1]['synonyms']))
 							{
 								unset($result['groups'][$id1]);
@@ -112,7 +112,7 @@ $gather_data		= function($word_str) use ($db)
 			}
 		}
 	}*/
-	
+
 	return $result;
 };
 
@@ -136,11 +136,11 @@ $display_synonyms	= function($query_result, array &$uses = array()) use ($db)
 	foreach($groups as $group)
 	{
 		++$dt;
-	
+
 		$synonyms_str   = '';
 		foreach($group['synonyms'] as $synonym)
 		{
-			
+
 			$stmt->execute(array($synonym['word_id']));
 			$has_synonyms   = $stmt->fetch(PDO::FETCH_COLUMN);
 
@@ -153,7 +153,7 @@ $display_synonyms	= function($query_result, array &$uses = array()) use ($db)
 				if(!empty($synonym['properties']))
 				{
 					$properties = array();
-					
+
 					foreach($synonym['properties'] as $property)
 					{
 						$properties[]   = '<abbr title="' . $property['augmentation'] . '">' . $property['abbreviation'] . '.</abbr>';
@@ -165,7 +165,7 @@ $display_synonyms	= function($query_result, array &$uses = array()) use ($db)
 				if(!empty($synonym['use']))
 				{
 					++$uses_indexing;
-					
+
 					$suffixes[] = '<span class="use">' . $synonym['use'] . '<sup id="!/' . $query_result['word']['word'] . '/' . $uses_indexing . '">[<a href="#!/' . $query_result['word']['word'] . '/' . $uses_indexing . '">' . $uses_indexing . '</a>]</sup></span>';
 					$uses[]	    = array($synonym['author_first_name'],$synonym['author_last_name'],$synonym['work_title'],$synonym['work_year']);
 				}
@@ -203,21 +203,21 @@ $get	= function($query)
 
 	$display		= array();
 	$uses			= array();
-	
+
 	$query_result	= $gather_data($query);
-	
+
 	if(empty($query_result))
 	{
 		return FALSE;
 	}
-	
+
 	$suggest_box	= function($word) use ($db)
-	{	
+	{
 		if(empty($_SESSION['ay']['auth']))
 		{
 			return;
 		}
-		
+
 		$earlier_suggestions	= $db->query("
 		SELECT
 			`w1`.`word_id`,
@@ -230,22 +230,22 @@ $get	= function($query)
 			`w1`.`word_id` = `s1`.`suggestion_id`
 		WHERE
 			`s1`.`user_id` = {$db->quote($_SESSION['ay']['auth']['id'])} AND
-			`s1`.`word_id` = {$db->quote($word['word_id'])}			
+			`s1`.`word_id` = {$db->quote($word['word_id'])}
 		")->fetchAll(PDO::FETCH_ASSOC);
-		
+
 		$es_string	= '';
-		
+
 		foreach($earlier_suggestions as $es)
 		{
 			$es_string	.= '<div class="suggestion" data-id="' . $es['word_id'] . '">' . $es['word'] . '</div>';
 		}
-	
+
 		return '
 		<div class="suggestions-box">
 			<h4>Žinote daugiau sinonimų žodžiui <span class="highlight">' . $word['word'] . '</span>?</h4>
-			
+
 			<div class="input" data-id="' . $word['word_id'] . '">' . $es_string . '</div>
-			
+
 			<div class="paragraph">
 				<p>Pasidalinkite savo žiniomis. Įveskite kitus žodžius, kurie yra sinonimai žodžiui <span class="highlight">' . $word['word'] . '</span>. Daugiau nieko nereikia daryti – sistema automatiškai įtraukia žodžius į pasiūlymų duomenų bazę. Tik pateikiami žodžiai gali būti įtraukti į duomenų bazę.</p>
 				<p>Jūs galite bet kada sugrįžtį į šitą puslapį jei norite pašalinti ankščiau pasiūlytą žodį.</p>
@@ -253,54 +253,54 @@ $get	= function($query)
 		</div>
 		';
 	};
-	
+
 	#die(var_dump( $query_result ));
-	
+
 	if(!empty($query_result['groups']))
 	{
 		$display[]	= '<div class="word">' . $query_result['word']['word'] . '</div>' . $display_synonyms($query_result, $uses);
 	}
-	
+
 	$display[]	=  $suggest_box($query_result['word']);
-	
+
 	$synonymous	= $db->query("SELECT w1.word_id, w1.word FROM words w1 INNER JOIN words_synonyms ws1 ON ws1.word_id = w1.word_id WHERE ws1.synonym_id = {$db->quote($query_result['word']['word_id'])};")->fetchAll(PDO::FETCH_ASSOC);
-	
+
 	foreach($synonymous as $s)
 	{
 		$result		= $gather_data($s['word']);
-	
+
 		# avoid repeating the same result
 		if($result['word']['word_id'] == $query_result['word']['word_id'])
 		{
 			continue;
 		}
-		
+
 		$display[]	= '<div class="word">' . $result['word']['word']. '</div>' . $display_synonyms($result, $uses);
 		$display[]	=  $suggest_box($result['word']);
 	}
-	
+
 	$output_str .= implode('<div class="break"></div>', $display);
-	
+
 	if(!empty($uses))
 	{
 		$i		    = 0;
 		$reference_str  = '';
-	
+
 		foreach($uses as $use)
 		{
 			++$i;
-	
+
 			$reference_str	.= '<li id="note-' . $i . '"> <sup><a href="#!/' . $query_result['word']['word'] . '/' . $i . '">^</a> [' . $i . ']</sup>„' . $use[2] . '“ ' .$use[3] . ', ' . $use[0] . ' ' . $use[1] . '</li>';
 		}
-	
+
 		$output_str.= '
 		<div class="clear"></div>
-		
+
 		<div id="reference">
 			<h4>Autorinė rodyklė</h4>
 			<ol id="notes">' . $reference_str . '</ol>
 		</div>';
 	}
-	
+
 	return array('word' => $query_result['word'], 'html' => $output_str);
 };
