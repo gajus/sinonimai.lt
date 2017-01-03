@@ -27,20 +27,6 @@ $db = new PDO(
 
 $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-class Ay_Exception extends Exception {
-	public function __construct($message, $code = 0, Exception $previous = NULL) {
-        // make sure everything is assigned properly
-        parent::__construct($message, $code, $previous);
-    }
-
-    // custom string representation of object
-    public function __toString() {
-        return __CLASS__ . ": [{$this->code}]: {$this->message}";
-
-        exit;
-    }
-}
-
 require_once AY_ROOT . DIRECTORY_SEPARATOR . 'includes' . DIRECTORY_SEPARATOR . 'helpers.inc.php';
 require_once ay_path('includes', 'facebook.inc.php');
 require_once ay_path('includes', 'project', 'helpers.inc.php');

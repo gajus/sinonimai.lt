@@ -58,7 +58,7 @@ function ay_build_query(array $data)
 
 	if(empty($data))
 	{
-		throw new Ay_Exception('Query cannot be empty.');
+		throw new \Exception('Query cannot be empty.');
 	}
 
 	$values	= array();
