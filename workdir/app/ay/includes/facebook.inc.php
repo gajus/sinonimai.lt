@@ -1,5 +1,5 @@
 <?php
-require_once ay_path('includes', 'facebook', 'facebook.php');
+require_once __DIR__ . '/facebook/facebook.php';
 
 header('P3P: CP="CAO PSA OUR"');
 

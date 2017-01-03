@@ -3,7 +3,6 @@ require_once __DIR__ . '/../../vendor/autoload.php';
 
 session_start();
 
-define('AY_ROOT', realpath(__DIR__ . '/..'));
 $locator = new \Gajus\Director\Locator('http://' . $_SERVER['HTTP_HOST'] . '/');
 
 define('AY_DOMAIN', $locator->url());
@@ -27,9 +26,9 @@ $db = new PDO(
 
 $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-require_once AY_ROOT . DIRECTORY_SEPARATOR . 'includes' . DIRECTORY_SEPARATOR . 'helpers.inc.php';
-require_once ay_path('includes', 'facebook.inc.php');
-require_once ay_path('includes', 'project', 'helpers.inc.php');
+require_once __DIR__ . '/helpers.inc.php';
+require_once __DIR__ . '/facebook.inc.php';
+require_once __DIR__ . '/project/helpers.inc.php';
 
 if(!isset($_POST['ay']))
 {

@@ -24,19 +24,6 @@ function ay_join_path()
 }
 
 /**
- * A shorthand function.
- * @see ay_join_path()
- */
-function ay_path()
-{
-	$args	= func_get_args();
-
-	array_unshift($args, AY_ROOT);
-
-	return call_user_func_array('ay_join_path', $args);
-}
-
-/**
  * @author Gajus Kuizinas <g.kuizinas@anuary.com>
  * @copyright Copyright (c) 2011, Anuary Ltd
  * @version 1.1
