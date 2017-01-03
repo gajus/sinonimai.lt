@@ -16,6 +16,13 @@ spec:
         checksum/secret: {{ include (print $.Chart.Name "/templates/secret.yaml") . | sha256sum }}
         pod.beta.kubernetes.io/init-containers: '[
           {
+            "name": "busybox",
+            "image": "busybox:latest",
+            "imagePullPolicy": "{{ .Values.image.pullPolicy }}"
+          }
+          {{- if not .Values.hostPath }}
+          ,
+          {
             "name": "create-workdir-volume",
             "image": "{{ .Values.image.repository }}:{{ .Values.image.tag }}",
             "imagePullPolicy": "{{ .Values.image.pullPolicy }}",
@@ -32,6 +39,7 @@ spec:
               }
             ]
           }
+          {{- end }}
           {{- if not .Values.database.host }}
           ,
           {
@@ -127,8 +135,14 @@ spec:
           ports:
             - containerPort: {{ .Values.service.internalPort }}
       volumes:
+        {{- if .Values.hostPath }}
+        - name: workdir
+          hostPath:
+            path: {{ .Values.hostPath | quote }}
+        {{- else }}
         - name: workdir
           emptyDir: {}
+        {{- end }}
         {{- if not .Values.database.host }}
         - name: database
           emptyDir: {}

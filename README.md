@@ -21,6 +21,12 @@ cd ./sinonimai.lt
 helm install ./chart
 ```
 
+Use `hostPath` configuration to mount host `./workdir` for development purposes, e.g.
+
+```bash
+helm install --set hostPath="${PWD}/workdir" ./chart
+```
+
 ## Data sanitization
 
 To protect user privacy, all user identifying data has been removed from the public data dump (`./sinonimai.lt.sql`).
