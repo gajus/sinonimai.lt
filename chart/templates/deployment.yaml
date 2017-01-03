@@ -1,0 +1,141 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: {{ template "fullname" . }}
+  labels:
+    app: {{ template "fullname" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+spec:
+  replicas: {{ .Values.replicaCount }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "fullname" . }}
+      annotations:
+        checksum/config-map: {{ include (print $.Chart.Name "/templates/config-map.yaml") . | sha256sum }}
+        checksum/secret: {{ include (print $.Chart.Name "/templates/secret.yaml") . | sha256sum }}
+        pod.beta.kubernetes.io/init-containers: '[
+          {
+            "name": "create-workdir-volume",
+            "image": "{{ .Values.image.repository }}:{{ .Values.image.tag }}",
+            "imagePullPolicy": "{{ .Values.image.pullPolicy }}",
+            "command": [
+              "cp",
+              "-a",
+              "/srv/workdir/.",
+              "/workdir"
+            ],
+            "volumeMounts": [
+              {
+                "name": "workdir",
+                "mountPath": "/workdir"
+              }
+            ]
+          }
+          {{- if not .Values.database.host }}
+          ,
+          {
+            "name": "create-database-volume",
+            "image": "{{ .Values.image.repository }}:{{ .Values.image.tag }}",
+            "imagePullPolicy": "{{ .Values.image.pullPolicy }}",
+            "command": [
+              "/bin/sh",
+              "-c"
+            ],
+            "args": [
+              "echo \"USE `${MYSQL_DATABASE}`\" > /database/a.sql && cp /workdir/sinonimai.lt.sql /database/b.sql"
+            ],
+            "volumeMounts": [
+              {
+                "name": "workdir",
+                "mountPath": "/workdir"
+              },
+              {
+                "name": "database",
+                "mountPath": "/database"
+              }
+            ]
+          }
+          {{- end }}
+        ]'
+    spec:
+      containers:
+        {{- if not .Values.database.host }}
+        - name: mysql
+          image: mysql:8
+          volumeMounts:
+            - name: database
+              mountPath: /docker-entrypoint-initdb.d
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: tezauras
+            - name: MYSQL_DATABASE
+              value: tezauras
+            - name: MYSQL_USER
+              value: tezauras
+            - name: MYSQL_PASSWORD
+              value: tezauras
+        {{- end }}
+        - name: php-fpm
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: DATABASE_USER
+              valueFrom:
+                secretKeyRef:
+                  name: {{ template "fullname" . }}
+                  key: database_user
+            - name: DATABASE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ template "fullname" . }}
+                  key: database_password
+            - name: DATABASE_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: {{ template "fullname" . }}
+                  key: database_host
+            - name: DATABASE_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: {{ template "fullname" . }}
+                  key: database_name
+            - name: FACEBOOK_APP_ID
+              valueFrom:
+                secretKeyRef:
+                  name: {{ template "fullname" . }}
+                  key: facebook_app_id
+            - name: FACEBOOK_APP_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ template "fullname" . }}
+                  key: facebook_app_secret
+          volumeMounts:
+            - name: workdir
+              mountPath: /srv/workdir
+              readOnly: true
+        - name: nginx
+          image: nginx:1
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          volumeMounts:
+            - name: workdir
+              mountPath: /srv/workdir
+              readOnly: true
+            - name: configuration-volume
+              mountPath: /etc/nginx/conf.d
+              readOnly: true
+          ports:
+            - containerPort: {{ .Values.service.internalPort }}
+      volumes:
+        - name: workdir
+          emptyDir: {}
+        {{- if not .Values.database.host }}
+        - name: database
+          emptyDir: {}
+        {{- end }}
+        - name: configuration-volume
+          configMap:
+            name: {{ template "fullname" . }}
+            items:
+              - key: nginx-configuration
+                path: default.conf

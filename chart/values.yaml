@@ -1,0 +1,17 @@
+replicaCount: 1
+database:
+  user:
+  password:
+  host:
+  name:
+facebook_app:
+  id:
+  secret:
+image:
+  repository: gajus/sinonimai.lt
+  tag: v1.0.0
+  pullPolicy: IfNotPresent
+service:
+  type: NodePort
+  externalPort: 80
+  internalPort: 80

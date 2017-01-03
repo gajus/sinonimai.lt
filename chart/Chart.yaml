@@ -1,0 +1,10 @@
+apiVersion: v1
+home: http://sinonimai.lt
+description: Gyvosios kalbos turtinimo projektas.
+name: tezauras
+version: 1.0.0
+sources:
+  - https://github.com/gajus/sinonimai.lt
+maintainers:
+  - name: Gajus Kuizinas
+    email: gajus@gajus.com

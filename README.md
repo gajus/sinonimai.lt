@@ -6,23 +6,19 @@ This is a code base of http://sinonimai.lt/ project. The code has not been modif
 
 I don't have time to further maintain this project. However, seeing that it has an active user base, I have decided to open-source development of this project.
 
-I have containerized the code base and written manifests that enable [Kubernetes](http://kubernetes.io/) setup. The only non-containerized component of the application is the database – production is using an external (Google Cloud SQL) database.
+I have containerized the code base and written [Kubernetes](http://kubernetes.io/) manifest [Helm](https://github.com/kubernetes/helm) templates.
+
+## Prerequisites
+
+* Kubernetes ^v1.15
+* Helm ^v2
 
 ## Setup
 
 ```bash
-DATABASE_USER='sinonimai'
-DATABASE_PASSWORD=''
-DATABASE_HOST='127.0.0.1'
-DATABASE_NAME='sinonimai.lt'
-FACEBOOK_APP_ID=''
-FACEBOOK_APP_SECRET=''
-
-mysql -u${DATABASE_USER} -p${DATABASE_PASSWORD} -h${DATABASE_HOST} ${DATABASE_NAME} < ./sinonimai.lt.sql
-
-kubectl create secret generic sinonimai-lt --from-literal=database_user="${DATABASE_USER}",database_password="${DATABASE_PASSWORD}",database_host="${DATABASE_HOST}",database_name="${DATABASE_NAME}",facebook_app_id="${FACEBOOK_APP_ID}",facebook_app_secret="${FACEBOOK_APP_SECRET}"
-kubectl label secret sinonimai-lt app=sinonimai-lt
-kubectl create -f ./manifests/app.yaml
+git clone git@github.com:gajus/sinonimai.lt.git
+cd ./sinonimai.lt
+helm install ./chart
 ```
 
 ## Data sanitization

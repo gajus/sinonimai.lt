@@ -1,0 +1,42 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "fullname" . }}
+  labels:
+    app: {{ template "fullname" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+data:
+  nginx-configuration: |-
+    server {
+      root /srv/workdir/endpoint;
+
+      location = /sitemap.txt {
+        rewrite ^ /sitemap.php last;
+      }
+
+      location /admin/ {
+        try_files $uri /admin/index.php;
+      }
+
+      location / {
+        try_files $uri /index.php;
+      }
+
+      location ~ \.php$ {
+        internal;
+
+        root /srv/workdir/app;
+
+        try_files $uri $uri/ =404;
+
+        fastcgi_split_path_info ^(.+?\.php)(/.*)$;
+
+        include fastcgi_params;
+
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        fastcgi_param PATH_INFO $fastcgi_path_info;
+
+        fastcgi_pass localhost:9000;
+        fastcgi_index index.php;
+      }
+    }
