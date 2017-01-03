@@ -10,6 +10,8 @@ data:
     server {
       root /srv/workdir/endpoint;
 
+      sendfile off;
+
       location = /sitemap.txt {
         rewrite ^ /sitemap.php last;
       }
