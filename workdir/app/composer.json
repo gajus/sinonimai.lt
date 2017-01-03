@@ -8,5 +8,9 @@
             "name": "Gajus Kuizinas",
             "email": "gajus@gajus.com"
         }
-    ]
+    ],
+    "require": {
+        "gajus/director": "^1.0",
+        "psr/log": "^1.0"
+    }
 }

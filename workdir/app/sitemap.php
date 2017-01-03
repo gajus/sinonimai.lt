@@ -32,5 +32,5 @@ $group_3	= array_unique(array_intersect($group_1, $group_2));
 header('Content-Type: text/plain');
 
 foreach ($group_3 as $w) {
-	echo 'http://sinonimai.lt/#!/' . $w . "\r\n";
+	echo $locator->url('#!/' . $w) . "\r\n";
 }

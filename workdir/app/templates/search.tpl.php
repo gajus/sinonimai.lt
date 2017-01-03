@@ -9,7 +9,7 @@ if(!empty($_GET['_escaped_fragment_']))
 
 	if(!$result)
 	{
-		header('Location: http://sinonimai.lt/', TRUE, 301);
+		header('Location: ' . $locator->url(), TRUE, 301);
 
 		exit;
 	}

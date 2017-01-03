@@ -1,8 +1,12 @@
 <?php
+require_once __DIR__ . '/../../vendor/autoload.php';
+
 session_start();
 
 define('AY_ROOT', realpath(__DIR__ . '/..'));
-define('AY_DOMAIN', 'http://' . $_SERVER['HTTP_HOST'] . '/');
+$locator = new \Gajus\Director\Locator('http://' . $_SERVER['HTTP_HOST'] . '/');
+
+define('AY_DOMAIN', $locator->url());
 
 define('AY_REDIRECT_REFERRER', 1);
 
