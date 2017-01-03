@@ -1,9 +1,4 @@
 <?php
-function u($path = '')
-{
-	return 'http://sinonimai.lt' . $path;
-}
-
 function mb_ucfirst($string, $e = 'UTF-8')
 {
     $first = mb_substr(mb_strtoupper($string, "utf-8"), 0, 1, 'utf-8');

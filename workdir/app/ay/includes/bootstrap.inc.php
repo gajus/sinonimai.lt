@@ -4,6 +4,7 @@ require_once __DIR__ . '/../../vendor/autoload.php';
 session_start();
 
 $locator = new \Gajus\Director\Locator('http://' . $_SERVER['HTTP_HOST'] . '/');
+$locator->setRoute('static', $locator->url('static/'));
 
 define('AY_DOMAIN', $locator->url());
 

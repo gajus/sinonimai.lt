@@ -4,25 +4,28 @@
     	<meta name="google-site-verification" content="IGj2KPkwgwVY6tFlxdvoM5CCgLp5r_jlf2aRvQfzcEI" />
 
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-		<base href="http://sinonimai.lt/" />
-		<link rel="icon" href="public/img/favicon.gif" type="image/gif" />
-		<link rel="stylesheet" href="public/css/default.css" type="text/css" />
 
+		<base href="<?=$locator->url()?>" />
 
+		<link rel="icon" href="<?=$locator->url('img/favicon.gif', 'static')?>" type="image/gif" />
+		<link rel="stylesheet" href="<?=$locator->url('css/default.css', 'static')?>" type="text/css" />
 
 		<meta property="og:title" content="Sinonimų Žodynas"/>
-	    <meta property="og:type" content="website"/>
-	    <meta property="og:url" content="http://sinonimai.lt"/>
-	    <meta property="og:image" content="http://sinonimai.lt/public/img/og-thumbnail.jpg"/>
-	    <meta property="og:site_name" content="Sinonimų Žodynas"/>
-	    <meta property="fb:admins" content="612460713"/>
-	    <meta property="fb:app_id" content="257825524265543"/>
-	    <meta property="og:locale" content="lt_LT"/>
-	    <meta property="og:description"
-	          content="Sinonimų žodynas yra gyvosios kalbos turtinimo projektas, skatinantis domėtis turimais kalbos turtais, jais naudotis ir juos kurti, įtraukti visuomenę, ypatingai jaunimą, į lietuvių kalbos puoselėjimo, jos vartojimo, aktyvinimo kūrybinę veiklą."/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:url" content="<?=$locator->url()?>"/>
+    <meta property="og:image" content="<?=$locator->url('img/og-thumbnail.jpg', 'static')?>"/>
+    <meta property="og:site_name" content="Sinonimų Žodynas"/>
+    <meta property="fb:admins" content="612460713"/>
+    <meta property="fb:app_id" content="257825524265543"/>
+    <meta property="og:locale" content="lt_LT"/>
+    <meta property="og:description" content="Sinonimų žodynas yra gyvosios kalbos turtinimo projektas, skatinantis domėtis turimais kalbos turtais, jais naudotis ir juos kurti, įtraukti visuomenę, ypatingai jaunimą, į lietuvių kalbos puoselėjimo, jos vartojimo, aktyvinimo kūrybinę veiklą."/>
 
 		<script type="text/javascript" src="http://apis.google.com/js/plusone.js"></script>
 
+    <script defer src="<?=$locator->url('js/jquery-1.7.min.js', 'static')?>"></script>
+		<script defer src="<?=$locator->url('js/jquery.debounce-1.0.5.js', 'static')?>"></script>
+		<script defer src="<?=$locator->url('js/jquery.ayTagBox.js', 'static')?>"></script>
+		<script defer src="<?=$locator->url('js/default.js', 'static')?>"></script>
 
 		<title><?=empty($title) ? 'Sinonimų žodynas'. (!empty($template['browser-title']) ? ' – ' . $template['browser-title'] : '') : $title?></title>
 
@@ -43,7 +46,7 @@
     <body>
 
 		<div id="header">
-			<a href="http://sinonimai.lt/" class="logo" title="Sinonimų žodynas"></a>
+			<a href="<?=$locator->url()?>" class="logo" title="Sinonimų žodynas"></a>
 
 			<?php if($user):?>
 			<div class="connected">
@@ -79,9 +82,9 @@
 				<?php elseif(count($suggestions) == 1):?>
 				Kol kas jūs pasiūlėte 1 sinonimą, kuris <?=$approved ? 'jau yra patvirtintas' : 'dar nėra patvirtintas'?>.
 				<?php elseif(count($suggestions) < 10):?>
-				Kol kas jūs pasiūlėte <?=count($suggestions)?> sinonimus iš kurių <?=$approved?> buvo pavirtint<?=$approved == 1 ? 'as' : 'i'?>.				
+				Kol kas jūs pasiūlėte <?=count($suggestions)?> sinonimus iš kurių <?=$approved?> buvo pavirtint<?=$approved == 1 ? 'as' : 'i'?>.
 				<?php else:?>
-				Kol kas jūs pasiūlėte <?=count($suggestions)?> sinonimų iš kurių <?=$approved?> buvo pavirtint<?=$approved == 1 ? 'as' : 'i'?>. 
+				Kol kas jūs pasiūlėte <?=count($suggestions)?> sinonimų iš kurių <?=$approved?> buvo pavirtint<?=$approved == 1 ? 'as' : 'i'?>.
 				<?php endif;?> Jūs naudojate bandomąją Facebook prisijungimo sistemą. Radę klaidų praneškite kontaktai@sinonimai.lt.</p>
 			</div>
 			<?php else:?>
@@ -93,11 +96,10 @@
 			<?php endif;?>
 
 			<div class="navigation">
-				<a href="http://sinonimai.lt/"<?=in_array($display, array(0,1,2,3,4,5)) ? ' class="active"' : ''?>>Sinonimų žodynas</a>
-				<?php /*<a href="http://sinonimai.lt/konkursas.html"<?=$display == 11 ? ' class="active"' : ''?>>Konkursas</a>*/?>
-				<a href="http://sinonimai.lt/sutrumpinimu-rodykle.html"<?=$display == 6 ? ' class="active"' : ''?>>Sutrumpinimų rodyklė</a>
-				<a href="http://sinonimai.lt/apie-sinonimu-zodyna.html"<?=$display == 7 ? ' class="active"' : ''?>>Apie sinonimų žodyną</a>
-				<a href="http://sinonimai.lt/kontaktai.html"<?=$display == 8 ? ' class="active"' : ''?>>Kontaktai</a>
+				<a href="<?=$locator->url()?>"<?=in_array($display, array(0,1,2,3,4,5)) ? ' class="active"' : ''?>>Sinonimų žodynas</a>
+				<a href="<?=$locator->url('sutrumpinimu-rodykle.html')?>"<?=$display == 6 ? ' class="active"' : ''?>>Sutrumpinimų rodyklė</a>
+				<a href="<?=$locator->url('apie-sinonimu-zodyna.html')?>"<?=$display == 7 ? ' class="active"' : ''?>>Apie sinonimų žodyną</a>
+				<a href="<?=$locator->url('kontaktai.html')?>"<?=$display == 8 ? ' class="active"' : ''?>>Kontaktai</a>
 			</div>
 		</div>
 
@@ -107,11 +109,8 @@
 
 		<div id="footer">
 			<ul>
-				<?php /*if(!empty($result['word']['last_updated'])): ?>
-				<li class="last-modified">Puslapis atnaujintas <time datetime="<?=date('Y-m-d', strtotime($result['word']['last_updated']))?>"><?=formated_date($result['word']['last_updated'])?></time></li>
-				<?php endif;*/ ?>
-				<li><a href="<?=u()?>">http://sinonimai.lt</a>, Internetinis sinonimų žodynas. <a href="http://anuary.com" title="Anuary – developers and social media experts.">Anuary</a> Ltd.</li>
-				<li>Turinio naudojimas yra ribojamas autorinių teisių. Daugiau informacijos <a href="<?=u('/naudojimo-salygos.html')?>">naudojimo sąlygose</a>.</li>
+				<li><a href="<?=$locator->url()?>"><?=$locator->url()?></a>, Internetinis sinonimų žodynas. <a href="http://anuary.com" title="Anuary – developers and social media experts.">Anuary</a> Ltd.</li>
+				<li>Turinio naudojimas yra ribojamas autorinių teisių. Daugiau informacijos <a href="<?=$locator->url('naudojimo-salygos.html')?>">naudojimo sąlygose</a>.</li>
 			</ul>
 		</div>
 
@@ -123,10 +122,6 @@
 		  js.src = "//connect.facebook.net/en_GB/all.js#xfbml=1&appId=257825524265543";
 		  fjs.parentNode.insertBefore(js, fjs);
 		}(document, 'script', 'facebook-jssdk'));</script>
-		<script type="text/javascript" src="public/js/jquery-1.7.min.js"></script>
-		<script type="text/javascript" src="public/js/jquery.debounce-1.0.5.js"></script>
-		<script type="text/javascript" src="public/js/jquery.ayTagBox.js"></script>
-		<script type="text/javascript" src="public/js/default.js"></script>
 
 		<script type="text/javascript">
 		  var _gaq = _gaq || [];
