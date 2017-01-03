@@ -3,5 +3,8 @@ Sitemap: http://sinonimai.lt/sitemap.txt
 User-agent: *
 Disallow: /admin/
 
+User-agent: *
+Disallow: /dictionary
+
 User-agent: ia_archiver
 Disallow:

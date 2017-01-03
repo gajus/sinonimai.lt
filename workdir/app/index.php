@@ -1,6 +1,12 @@
 <?php
 require 'ay/includes/bootstrap.inc.php';
 
+if ($_SERVER['REQUEST_URI'] === '/dictionary') {
+	require_once './dictionary.php';
+
+	exit;
+}
+
 if(!empty($_GET['connect']))
 {
 	$authenticate_user();

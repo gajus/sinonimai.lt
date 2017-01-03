@@ -31,11 +31,6 @@ $(document).ready(function(){
 	$('#suggestions li').live('click', function(){
 		$('form[name=search]').trigger('submit');
 	});
-	
-	if($('#tag-box').length)
-	{	
-		
-	}
 });
 
 function displayResult(query)
@@ -43,7 +38,7 @@ function displayResult(query)
 	$('input[name=call]').val(query);
 
 	$.ajax({
-		url: 'dictionary.php',
+		url: '/dictionary',
 		type: 'post',
 		dataType: 'json',
 		data: { action: 'display-entry', query: query },
@@ -120,7 +115,7 @@ function keyUp(e)
 	$('#result').show().html('<div class="message loading">Paieška vykdoma <img src="/static/img/ajax-loader.gif" alt="" /></div>');
 
 	suggestion_ajax_request	= $.ajax({
-		url: '/dictionary.php',
+		url: '/dictionary',
 		type: 'POST',
 		dataType: 'json',
 		timeout: 5000,

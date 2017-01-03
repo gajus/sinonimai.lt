@@ -1,6 +1,4 @@
 <?php
-require 'ay/includes/bootstrap.inc.php';
-
 if(empty($_POST['action']))
 {
 	exit;
